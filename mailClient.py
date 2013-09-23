@@ -28,33 +28,36 @@ def menu(user, passwd):
 	print '---------------------------------------------------------------------'
 	print '(1) LIST\n(2) SEARCH\n(3) FETCH\n(4) EXAMINE\n(5) CREATE\n(6) DELETE\n(7) UID\n(8) LOGOUT'
 	print '---------------------------------------------------------------------'
-	choice = raw_input("-> ")
-	if choice == 1
+	choice = raw_input('-> ')
+	if choice == '1':
 		list()
-	if choice == 2
+	if choice == '2':
 		search()
-	if choice == 3
+	if choice == '3':
 		fetch()
-	if choice == 4
+	if choice == '4':
 		examine()
-	if choice == 5
+	if choice == '5':
 		create()
-	if choice == 6
+	if choice == '6':
 		delete()
-	if choice == 7
+	if choice == '7':
 		uid()
-	if choice == 8
+	if choice == '8':
 		logout()
 		
 	return
 	
 #LOGIN
 def login(user, passwd):
-	sslSocket.send("A001 LOGIN " + user + " " + passwd + "\r\n")
+	sslSocket.send('A001 LOGIN ' + user + ' ' + passwd + '\r\n')
 	recv = sslSocket.recv(1024)
 	return
 	
 def list():
+	sslSocket.send('')
+	recv = sslSocket.recv(1024)
+	print recv
 	return
 	
 def search():
@@ -76,7 +79,7 @@ def uid():
 	return
 	
 #MAIN
-if __name__ == "__main__":
+if __name__ == '__main__':
 	user = getuser()
 	passwd = getpass.getpass()
 	menu(user, passwd)
