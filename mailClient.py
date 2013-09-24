@@ -14,6 +14,7 @@ sslSocket = ssl.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM),
 ssl_version = ssl.PROTOCOL_SSLv23)
 sslSocket.connect(mailserver)
 recv = sslSocket.recv(1024)
+print recv
 
 #PROMPT USER FOR USERNAME
 def getuser():
@@ -22,7 +23,7 @@ def getuser():
 
 #MENU
 def menu(user, passwd):
-	os.system("clear")
+#	os.system("clear")
 	print '---------------------------------------------------------------------'
 	print 'Welcome, ' + user + '.  Please select an option from the list below: '
 	print '---------------------------------------------------------------------'
@@ -52,10 +53,12 @@ def menu(user, passwd):
 def login(user, passwd):
 	sslSocket.send('A001 LOGIN ' + user + ' ' + passwd + '\r\n')
 	recv = sslSocket.recv(1024)
+	print recv
 	return
 	
 def list():
-	sslSocket.send('')
+	pattern = raw_input('Directory to list: ')
+	sslSocket.send('A001 LIST "" *\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	return
@@ -82,8 +85,9 @@ def uid():
 if __name__ == '__main__':
 	user = getuser()
 	passwd = getpass.getpass()
-	menu(user, passwd)
 	login(user, passwd)
+	menu(user, passwd) 
+
 
 	
 	
