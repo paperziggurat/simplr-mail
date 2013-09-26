@@ -66,8 +66,12 @@ def list():
     return
 #getting bad could not parse command if added \delete and uknown command when putting in ALL get A001 unknown command SEARCHALL dont know whats going on
 def search():
-    pattern = raw_input('Enter the mailbox you want to search: ')
-    sslSocket.send('A001 SEARCH  '  + mailbox + ' \r\n')
+    mailbox = raw_input('Enter the mailbox you want to search: ')
+    sslSocket.send('A001 EXAMINE ' + mailbox +'\r\n')
+    recv= sslSocket.recv(1024)
+    print recv
+    searchterm = raw_input('What would you like to search: ' )
+    sslSocket.send('A002 SEARCH ' + searchterm + '\r\n')
     recv= sslSocket.recv(1024)
     print recv
     return  
@@ -78,24 +82,24 @@ def fetch():
 #examine just looks in the mailbox and returns either read or not read
 def examine():  
     print 'Enter the name of the mailbox name you wish to look at'
-    pattern = raw_input('Enter mailbox name: ')
-    sslSocket.send('A001 EXAMINE' + pattern + '\r\n')
-    recv = sslSocket.recv(1024)
+    mailbox= raw_input('Enter mailbox name : ')
+    sslSocket.send('A001 EXAMINE ' + mailbox + '\r\n')
+    recv= sslSocket.recv(1024)
     print recv
     return
  
 def create():
     print 'Type in the name of the folder you want to create.'
-    pattern = raw_input('Enter the folder name you want to create. ')
-    sslSocket.send('A001 CREATE ' + pattern + '\r\n')
+    mailbox = raw_input('Enter the folder name you want to create. ')
+    sslSocket.send('A001 CREATE ' + mailbox + '\r\n')
     recv = sslSocket.recv(1024)
     print recv
     return
  
 def delete():
     print 'Type in the name of the folder you want to delete.'
-    pattern = raw_input('Enter the folder name you want to destroy. ')
-    sslSocket.send('A001 DELETE ' + pattern + '\r\n')
+    mailbox = raw_input('Enter the folder name you want to destroy. ')
+    sslSocket.send('A001 DELETE ' + mailbox + '\r\n')
     recv = sslSocket.recv(1024)
     print recv
     return
@@ -114,6 +118,7 @@ if __name__ == '__main__':
         passwd = getpass.getpass()
         login(user, passwd)
         menu(user, passwd)
+
 
 
 	
