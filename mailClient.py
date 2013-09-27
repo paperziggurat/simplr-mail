@@ -108,10 +108,12 @@ def fetch(user, passwd):
 	sslSocket.send('A005 EXAMINE ' + mailbox + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	email = raw_input ('Enter email to fetch: ')
 	sslSocket.send('A006 FETCH ' + email + ' BODY[0]\r\n') #FETCH HEADER
 	recv = sslSocket.recv(1024)
 	print recv 
+	
 	print '\n\n'
 	sslSocket.send('A007 FETCH ' + email + ' BODY[1]\r\n') #FETCH BODY
 	recv = sslSocket.recv(1024)
