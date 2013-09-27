@@ -38,6 +38,7 @@ def menu(user, passwd):
 	print ' 1) LIST \n 2) SEARCH \n 3) FETCH \n 4) EXAMINE \n 5) CREATE \n 6) DELETE \n 7) UID'
 	print '--------------------------------------------------------------------------'
 	print '--------------------------------------------------------------------------'
+	
 	choice = raw_input('-> ')
 	if choice == '1':
 		list(user, passwd)
@@ -82,19 +83,22 @@ def list(user, passwd):
 	sslSocket.send('A002 LIST "'+ mailbox +'" *\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	loopmenu(user, passwd)
 	return
 
 #SEARCH MAILBOX FOR MAIL CONTAINING SERCH TERMS
 def search(user, passwd):
-	mailbox = raw_input('Enter the name of the mailbox you wish to search: ')
-	sslSocket.send('A003 EXAMINE ' + mailbox + '\r\n')
+	mailbox = raw_input('Enter the name of the mailbox you wish to search: ') 
+	sslSocket.send('A003 EXAMINE ' + mailbox + '\r\n') #EXAMINE THIS MAILBOX FOR SEARCH
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	search = raw_input('Enter search terms: ')
-	sslSocket.send('A004 SEARCH ' + search + '\r\n')
+	sslSocket.send('A004 SEARCH ' + search + '\r\n') #SEARCH EXAMINED MAILBOX CONTAINING SEARCH TERMS
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	loopmenu(user, passwd)
 	return
 
@@ -112,6 +116,7 @@ def fetch(user, passwd):
 	sslSocket.send('A007 FETCH ' + email + ' BODY[1]\r\n') #FETCH BODY
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	loopmenu(user, passwd)
 	return
 
@@ -121,6 +126,7 @@ def examine(user, passwd):
 	sslSocket.send('A008 EXAMINE ' + mailbox + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	loopmenu(user, passwd)
 	return
 
@@ -130,6 +136,7 @@ def create(user, passwd):
 	sslSocket.send('A009 CREATE ' + folder + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	loopmenu(user, passwd)
 	return
 
@@ -139,6 +146,7 @@ def delete(user, passwd):
 	sslSocket.send('A010 DELETE ' + folder + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	loopmenu(user, passwd)
 	return
 
@@ -158,13 +166,14 @@ def uid(user, passwd):
 	sslSocket.send('A013 UID FETCH ' + uid + '\r\n') #RETURN UID OF EMAIL CONTAINING SEARCH TERMS
 	recv = sslSocket.recv(1024)
 	print recv
+	
 	loopmenu(user, passwd)
 	return
 
 #MAIN	
 if __name__ == '__main__':
 	user = getuser()
-	passwd = getpass.getpass()
+	passwd = getpass.getpass() #HIDES USER PASSWORD
 	login(user, passwd)
 	menu(user, passwd)
 		
