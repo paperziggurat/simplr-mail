@@ -1,4 +1,14 @@
-#AARON SAMS & WES CARTER - IMAP CLIENT
+#AARON SAMS & WES CARTER
+
+#                __  .__                    .__                               .__  .__               __     #
+# ______ ___.__._/  |_|  |__   ____   ____   |__| _____ _____  ______     ____ |  | |__| ____   _____/  |_  #
+# \____ <   |  |\   __\  |  \ /  _ \ /    \  |  |/     \\__  \ \____ \  _/ ___\|  | |  |/ __ \ /    \   __\ #
+# |  |_> >___  | |  | |   Y  (  <_> )   |  \ |  |  Y Y  \/ __ \|  |_> > \  \___|  |_|  \  ___/|   |  \  |   #
+# |   __// ____| |__| |___|  /\____/|___|  / |__|__|_|  (____  /   __/   \___  >____/__|\___  >___|  /__|   # 
+# |__|   \/                \/            \/           \/     \/|__|          \/             \/     \/       #
+#																											#
+
+
 import socket, ssl, base64, getpass, os, platform
 #--------------------------------------
 mailserver = ('imap.gmail.com', 993)	
@@ -69,7 +79,7 @@ def login(user, passwd):
 #LIST MAILBOXES
 def list(user, passwd):
 	mailbox = raw_input('Mailbox to list, ("/" to list root mailbox): ')
-	sslSocket.send('A001 LIST "'+ mailbox +'" *\r\n')
+	sslSocket.send('A002 LIST "'+ mailbox +'" *\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	loopmenu(user, passwd)
@@ -78,11 +88,11 @@ def list(user, passwd):
 #SEARCH MAILBOX FOR MAIL CONTAINING SERCH TERMS
 def search(user, passwd):
 	mailbox = raw_input('Enter the name of the mailbox you wish to search: ')
-	sslSocket.send('A001 EXAMINE ' + mailbox + '\r\n')
+	sslSocket.send('A003 EXAMINE ' + mailbox + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	search = raw_input('Enter search terms: ')
-	sslSocket.send('A002 SEARCH ' + search + '\r\n')
+	sslSocket.send('A004 SEARCH ' + search + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	loopmenu(user, passwd)
@@ -91,15 +101,15 @@ def search(user, passwd):
 #FETCH FUNCTION FIRST EXAMINES MAILBOX TO FETCH FROM, THEN FETCHES HEADER + BODY	
 def fetch(user, passwd):
 	mailbox = raw_input('Enter the name of the mailbox from which you wish to fetch: ')
-	sslSocket.send('A001 EXAMINE ' + mailbox + '\r\n')
+	sslSocket.send('A005 EXAMINE ' + mailbox + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	email = raw_input ('Enter email to fetch: ')
-	sslSocket.send('A002 FETCH ' + email + ' BODY[0]\r\n') #FETCH HEADER
+	sslSocket.send('A006 FETCH ' + email + ' BODY[0]\r\n') #FETCH HEADER
 	recv = sslSocket.recv(1024)
 	print recv 
 	print '\n\n'
-	sslSocket.send('A003 FETCH ' + email + ' BODY[1]\r\n') #FETCH BODY
+	sslSocket.send('A007 FETCH ' + email + ' BODY[1]\r\n') #FETCH BODY
 	recv = sslSocket.recv(1024)
 	print recv
 	loopmenu(user, passwd)
@@ -108,7 +118,7 @@ def fetch(user, passwd):
 #EXAMINE FUNCTION	
 def examine(user, passwd):
 	pattern = raw_input('Enter name of mailbox to examine: ')
-	sslSocket.send('A001 EXAMINE ' + pattern + '\r\n')
+	sslSocket.send('A008 EXAMINE ' + mailbox + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	loopmenu(user, passwd)
@@ -117,7 +127,7 @@ def examine(user, passwd):
 #CREATE FUNCTION
 def create(user, passwd):
 	folder = raw_input('Enter the name of the folder you wish to create: ')
-	sslSocket.send('A001 CREATE ' + pattern + '\r\n')
+	sslSocket.send('A009 CREATE ' + folder + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	loopmenu(user, passwd)
@@ -125,8 +135,8 @@ def create(user, passwd):
 
 #DELETE FUNCTION
 def delete(user, passwd):
-	delete = raw_input('Enter the name of the folder you wish to delete: ')
-	sslSocket.send('A001 DELETE ' + pattern + '\r\n')
+	folder = raw_input('Enter the name of the folder you wish to delete: ')
+	sslSocket.send('A010 DELETE ' + folder + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
 	loopmenu(user, passwd)
@@ -134,6 +144,20 @@ def delete(user, passwd):
 
 #GET UID FUNCTION	
 def uid(user, passwd):
+	mailbox = raw_input('Mailbox for UID search/fetch: ') 
+	sslSocket.send('A011 EXAMINE ' + mailbox + '\r\n') #EXAMINE THIS MAILBOX
+	recv = sslSocket.recv(1024)
+	print recv
+	
+	search = raw_input('Enter FLAG (e.g. TEXT, FROM, etc.) and search term (UID will be returned): ')
+	sslSocket.send('A012 UID SEARCH ' + search + '\r\n') #SEARCH THIS MAILBOX WITH SEARCH TERMS
+	recv = sslSocket.recv(1024)
+	print recv
+	
+	uid = raw_input('Enter UID to fetch email: ')
+	sslSocket.send('A013 UID FETCH ' + uid + '\r\n') #RETURN UID OF EMAIL CONTAINING SEARCH TERMS
+	recv = sslSocket.recv(1024)
+	print recv
 	loopmenu(user, passwd)
 	return
 
