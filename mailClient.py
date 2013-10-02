@@ -1,4 +1,4 @@
-#AARON SAMS & WES CARTER
+#AARON SAMS & WES CARTER 
 
 #                __  .__                    .__                               .__  .__               __     #
 # ______ ___.__._/  |_|  |__   ____   ____   |__| _____ _____  ______     ____ |  | |__| ____   _____/  |_  #
@@ -124,7 +124,7 @@ def fetch(user, passwd):
 
 #EXAMINE FUNCTION	
 def examine(user, passwd):
-	pattern = raw_input('Enter name of mailbox to examine: ')
+	mailbox = raw_input('Enter name of mailbox to examine: ')
 	sslSocket.send('A008 EXAMINE ' + mailbox + '\r\n')
 	recv = sslSocket.recv(1024)
 	print recv
